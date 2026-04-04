@@ -1,7 +1,7 @@
 import pandas as pd #p181
 import matplotlib.pyplot as plt #p31
 
-plt.rcParams['font.family'] = 'Malgun Gothic' # 윈도우 기본 폰트인 '맑은 고딕'
+plt.rcParams['font.family'] = 'Malgun Gothic'
 
 # 간단한 데이터 만들기 '과일' 열(Column)과 '재고' 열에 들어갈 내용을 정함
 data = {'과일': ['사과', '바나나', '딸기'], '재고': [10, 20, 15]}
