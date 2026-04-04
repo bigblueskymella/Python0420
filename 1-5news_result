@@ -1,0 +1,24 @@
+# 웹사이트에 접속 🍋요청을 보내는
+import requests  
+from bs4 import BeautifulSoup
+
+# 1. 네이버 뉴스 메인 주소
+url = 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=105'
+
+# 2. 브라우저인 척 속이기
+# 서버가 "사람이 아니라 로봇이네?" 하고 차단하는 걸 막기 위해 'User-Agent'를 넣습니다.
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
+
+# 3. 페이지 정보 요청
+response = requests.get(url, headers=headers)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# 4. 뉴스 제목이 들어있는 태그 찾기
+# 네이버 뉴스 구조상 제목은 보통 'a' 태그의 'sh_text_headline' 클래스 등에 들어있습니다.
+titles = soup.select('.sa_text_title') # 🔴🟠클래스 이름 앞에는 마침표(.)를 붙입니다.
+
+print(f"--- 총 {len(titles)}개의 뉴스 제목을 찾았습니다 ---")
+
+# 5. 반복문으로 제목만 하나씩 출력하기
+for i, title in enumerate(titles, 1):
+    print(f"{i}. {title.text.strip()}")
