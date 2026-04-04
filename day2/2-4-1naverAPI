@@ -1,0 +1,37 @@
+#🟢네이버 블로그, 쇼핑 제목으로 트랜드 파악 
+# 둘 다 실행시"sort":"asc"를 빼거나 맞춰서 "sim"으로 바꾸기
+import requests
+import pandas as pd
+
+# 1. 네이버 개발자 센터에서 발급받은 '도장' 준비
+client_id = "___________________"
+client_secret = "____________"
+
+def get_naver_search(category, query, display=100): #함수 선언
+    url = f"https://openapi.naver.com/v1/search/{category}.json"
+    headers = {
+        "X-Naver-Client-Id": client_id,
+        "X-Naver-Client-Secret": client_secret
+    }
+    # "sort":"🔴asc"오름차순(최저가순) / 🔴sim 유사도순 (블로그)
+    params = {"query": query, "display": display, "sort":"asc"}
+    
+    response = requests.get(url, headers=headers, params=params)
+    return pd.DataFrame(response.json()['items'])
+
+# [실습 1] 🍋블로그 검색: 우리 공사 관련 최신 여론 확인
+# df_blog = get_naver_search("blog", "한국전력 에너지절약") #함수 사용
+# print("--- 블로그 검색 결과 ---")
+# print(df_blog[['title', 'link']].head())
+
+# [실습 2] 🍋쇼핑 검색: 관련 물품 최저가 동향 (자산 구입 시 참고)
+df_shop = get_naver_search("shop", "사무용 모니터")
+print("\n--- 쇼핑 검색 결과 ---")
+print(df_shop[['title', 'lprice', 'mallName']].head())
+
+# [실습 2-2]수집한 데이터를 엑셀로 저장 -100개
+# df_blog.to_excel('blog_list_naver.xlsx')
+# print("네이버 블로그 검색리스트가 엑셀 파일로 저장되었습니다!")
+
+df_shop.to_excel('shopping_list_naver.xlsx', index=False)
+print("네이버 쇼핑리스트(최저가순) 엑셀 파일로 저장되었습니다!")
