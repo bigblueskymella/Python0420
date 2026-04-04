@@ -1,0 +1,43 @@
+# 🟢실시간 미세먼지 데이터 수집
+# 대기오염정보/🟢시도별 실시간 측정정보 조회
+import requests
+import pandas as pd
+
+# 1. 내 인증키 설정 (발급받은 '일반 1️⃣인증키(Encoding)'를 복사해서 넣으세요)
+serviceKey = "______________________"
+
+# 2. 데이터를 요청할 주소 (🍋미세먼지 실시간 측정 정보)
+url = 'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty'
+
+# 3. 요청 파라미터 (어떤 데이터를 줄지 정하는 필터)
+params = {
+    'serviceKey' : serviceKey,
+    'returnType' : 'json',      # ★JSON으로 받아야 Pandas 변환 쉬움
+    'numOfRows' : '100',        # 가져올 데이터 개수
+    'pageNo' : '1',
+    'sidoName' : '부산',         # 측정 지역 (2️⃣서울, 부산, 경기 등)
+    'ver' : '1.0'
+}
+
+# 4. 데이터 요청하기
+response = requests.get(url, params=params)
+
+# 5. 결과 확인
+if response.status_code == 200:
+    data = response.json()
+    # 복잡한 JSON 구조에서 '알맹이'만 뽑아내기 (딕셔너리 접근)
+    # 공공데이터는 구조가 복잡해서 ['response']['body']['items'] 식으로 들어가야 데이터가 나옵니다.
+    # print(data) #3️⃣데이터 구조 확인
+    print(data['response']['body'].keys()) #데이터 구조 확인
+    items = data['response']['body']['items']
+    df_air = pd.DataFrame(items) #items를 데이터프레임으로 만들기
+    print("--- 실시간 미세먼지 데이터 수집 내용 ---")
+    # print(df_air.head()) #4️⃣🍋이것 먼저 실행해보고 5️⃣해보기
+    print(df_air[['stationName', 'khaiValue', 'dataTime']].head()) #5️⃣많은 컬럼 중 고르기
+else:
+    print("에러 발생:", response.status_code)
+
+
+# 수집한 데이터를 엑셀로 저장 -40줄? 자체 데이터가 40개뿐
+df_air.to_excel('seoul_air_quality.xlsx', index=False)
+print("오늘 서울의 미세먼지 리포트가 생성(저장)되었습니다!")
