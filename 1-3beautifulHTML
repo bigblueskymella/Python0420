@@ -1,0 +1,22 @@
+from bs4 import BeautifulSoup
+
+html_doc = """
+<html>
+  <body>
+    <h1>오늘의 뉴스</h1>
+    <p class="title">파이썬 데이터 분석 입문</p>
+    <p class="content">1일차 환경 구축이 끝났습니다.</p>
+  </body>
+</html>
+"""
+
+# 2. BeautifulSoup으로 HTML 분석하기
+#BeautifulSoup 객체로 변환
+soup = BeautifulSoup(html_doc, 'html.parser') 
+
+# 3. 원하는 태그만 뽑아내기
+title_tag = soup.find('p', class_='title') # p 태그 중에서 클래스가 title인 것
+content_tag = soup.find('p', class_='content')
+
+print(f"제목: {title_tag.text}") #문자열 앞에 f를 붙이면 "변수나 식을 함께"
+print(f"내용: {content_tag.text}") #중괄호 안에 변수명이나 표현식을 직접 넣어 문자열과 함께 출력
