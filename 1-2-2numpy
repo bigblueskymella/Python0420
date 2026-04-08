@@ -1,0 +1,15 @@
+# p29 넘파이: Numerical Python 산술 계산 라이브러리
+import numpy as np
+
+# 파이썬 리스트 생성
+list_data = [1, 2, 3, 4, 5]
+
+# Numpy 배열로 변환
+arr = np.array(list_data)
+
+print(f"평균값: {np.mean(arr)}") # 평균 계산
+print(f"최댓값: {np.max(arr)}")  # 최댓값 계산
+print(f"전체 합: {np.sum(arr)}")  # 합계 계산
+
+# 오류: numpy나 pandas 버전이 서로 맞지 않거나 설치가 깨진 경우
+# pip install --upgrade --force-reinstall numpy pandas
