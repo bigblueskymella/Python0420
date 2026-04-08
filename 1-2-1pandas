@@ -1,17 +1,15 @@
 import pandas as pd #p181
-import matplotlib.pyplot as plt #p31
-
-plt.rcParams['font.family'] = 'Malgun Gothic'
+import matplotlib.pyplot as plt #p31 p382
 
 # 간단한 데이터 만들기 '과일' 열(Column)과 '재고' 열에 들어갈 내용을 정함
 data = {'과일': ['사과', '바나나', '딸기'], '재고': [10, 20, 15]}
 # 딕셔너리 형태의 데이터를 Pandas의 'DataFrame(표)' 형태로 변환
 df = pd._________(data) #p188 표 같은 '엑셀 시트' 처럼 작동
-
 # 표 출력
 print(df)
 
 # Pandas의 plot() 함수: 그래프 그린다. kind 종류: 막대그래프(bar)
+plt.rcParams['font.family'] = 'Malgun Gothic'
 df.plot(x='과일', y='재고', kind='bar')
 
 # 그래프 띄우기
