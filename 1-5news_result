@@ -1,12 +1,11 @@
-# 웹사이트에 접속 🍋요청을 보내는
+# 웹사이트에 접속 🍋요청
 import requests  
 from bs4 import BeautifulSoup
 
 # 1. 네이버 뉴스 메인 주소
-url = 'https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=105'
+url = '____________________________'
 
-# 2. 브라우저인 척 속이기
-# 서버가 "사람이 아니라 로봇이네?" 하고 차단하는 걸 막기 위해 'User-Agent'를 넣습니다.
+# 2. 브라우저로 인식시켜 서버가 "사람이 아니라 로봇이네?" 하고 차단하는 걸 막기 위해 'User-Agent'를 넣습니다.
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
 
 # 3. 페이지 정보 요청
