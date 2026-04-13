@@ -1,0 +1,84 @@
+#🟢Merge 합치기 p347
+import pandas as pd
+
+# 데이터 생성 (실습용)
+df_sales = pd.DataFrame({'사번': [101, 102, 103], '매출': [500, 700, 300]})
+df_info = pd.DataFrame({'사번': [101, 102, 103], '이름': ['홍길동', '김철수', '이영희'], '부서': ['영업1팀', '영업2팀', '기획팀']})
+
+# [VLOOKUP 한 줄 해결] 🍋사번을 기준으로 🍋두 표를 합침
+result = pd._____(df_sales, df_info, on='____')
+
+print(result)
+
+
+
+================================================================================
+
+#🟢groupby 그룹화와 평균
+import pandas as pd
+
+# 데이터 생성 (실습용)
+data = {
+    '부서': ['인사팀', 'IT팀', '인사팀', 'IT팀', '기획팀'],
+    '항목': ['비품', '서버', '회식', '소프트웨어', '도서'],
+    '비용': [150, 500, 200, 300, 50]
+}
+df = pd.DataFrame(____)
+
+# groupby 그룹화
+# [피벗 테이블 한 줄 해결] 부서별 비용 🍋합계 계산
+pivot = df.pivot_table(index='부서', values='비용', aggfunc='sum') 
+pivot2 = df.groupby('부서')['비용'].____() # 부서별 비용 🍋평균 한 줄 컷! 
+print("<부서별 비용> \n", _____) 
+print("\n<부서별 비용 평균> \n",______)
+
+
+
+
+================================================================================
+
+#🟢Join으로 두 개의 표(DataFrame) 비어있는 (결측치) 셀 포함 합치기
+# 데이터베이스의 SQL Join과 유사
+import pandas as pd
+
+# 1. 준비: 두 개의 표(DataFrame) 만들기
+# 왼쪽 표: 사원 이름 (인덱스: 사번)
+df_left = pd.DataFrame({'이름': ['철수', 
+                               '영희', '민수']}, index=['A01', 'A02', 'A03'])
+
+# 오른쪽 표: 급여 정보 (인덱스: 사번)
+df_right = pd.DataFrame({'급여': [300, 400, 500]}, index=['A01', 'A02', 'A04'])
+
+print("--- [합치기 전] 왼쪽 표 (사원명단) ---")
+print(df_left)
+print("\n--- [합치기 전] 오른쪽 표 (급여현황) ---")
+print(df_right)
+print("-" * 40)
+
+# 2. Join 실행 (기본값은 Left Join입니다)
+# 1️⃣왼쪽(df_left)을 기준으로 오른쪽(df_right)의 '급여' 컬럼을 가져와 붙임.
+# joined_df = df_left.join(df_right)
+joined_df = df_left.join(df_right, how='outer') # 2️⃣A04 데이터도 사라지지 않고 나타남
+
+print("\n--- [합친 후] 결과 표 (Joined) ---")
+print(joined_df)
+
+
+================================================================================
+
+#🟢p298
+ages = [20, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32]
+bins = [18, 25, 35, 60, 100]
+age_categories = pd.cut(ages, bins)
+age_categories
+# print(len(age_categories))
+age_categories.codes
+age_categories.categories
+age_categories.categories[0]
+
+group_names = ["젊은", "청년", "중년", "노인"]
+pd.cut(ages, bins, labels=group_names)
+
+# 🟢그래프를 그리기 직전에 꼭 df.info()나 df.isnull().sum()
+#  **결측치(빈 칸)**가 없는지 확인하는 습관
+
