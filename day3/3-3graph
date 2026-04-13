@@ -1,0 +1,36 @@
+#🟢전처리: fillna와 groupby 시본이 추가됨
+
+import pandas as pd # 데이터 표(DataFrame)를 다루는 라이브러리
+import matplotlib.pyplot as plt # 기본 그래프를 그리는 도구
+import seaborn as sns # 데이터 시각화 라이브러리 🟠pip install seaborn 
+
+# 1. 가상 데이터 생성 (전처리 실습)
+data = {
+    '부서': ['고객지원', '시설관리', '고객지원', '에너지사업', '시설관리', '고객지원'],
+    '만족도': [85, 92, None, 78, 95, 88], # 결측치(None) 포함
+    '접수건수': [120, 80, 150, 40, 90, 110]
+}
+df = pd.DataFrame(data)
+
+# 2. 전처리: 비어있는 만족도를 평균값으로 채우기
+df['만족도'] = df['만족도'].fillna(df['만족도'].mean())
+# print("<빈칸 채운 값 보기> \n", df['만족도']) 
+
+# 3. 통계 분석: 부서별(그룹화) 평균 만족도 계산
+# '부서'별로 데이터를 그룹으로 묶고, 🍋각 그룹의 '만족도' 평균을 계산하여 저장
+dept_stats = df.groupby('부서')['만족도'].mean()
+# print("<그룹화한 값 보기> \n", dept_stats)
+
+# 4. 시각화 (한글 설정 필수)
+plt.rcParams['font.family'] = 'Malgun Gothic' # 그래프 내 한글 깨짐 방지를 위해
+plt.figure(figsize=(10, 6)) #도화지 가로, 세로 길이(단위: 인치) 
+
+# 부서별 만족도 막대 그래프
+dept_stats.plot(kind='bar', color=['skyblue', 'orange', 'green'], rot=0)
+
+# x축은 부서 이름(index), y축은 계산된 평균값(values), 색상 테마는 'viridis'
+#sns.barplot(x=dept_stats.index, y=dept_stats.values, palette='viridis')
+
+plt.title('부서별 고객 만족도 현황', fontsize=25) 
+plt.ylabel('평균 만족도 (점)') 
+plt.show()
