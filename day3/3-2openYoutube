@@ -1,0 +1,65 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By        
+from selenium.webdriver.common.keys import Keys
+import time
+import pandas as pd  
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+driver.get("____________________________________________")
+time.sleep(3) 
+
+body = driver.find_element(By.TAG_NAME, 'body')
+for i in range(5): 
+    body.send_keys(Keys.END)
+    time.sleep(2) 
+
+print("스크롤 완료! 이제 댓글을 수집할 준비가 되었습니다.")
+
+ids = driver.find_elements(By.CSS_SELECTOR, "#author-text")
+comments = driver.find_elements(By.CSS_SELECTOR, "#content-text")
+
+print(f"--- 총 {len(comments)}개의 댓글을 발견했습니다 ---")
+
+youtube_data = []
+for i in range(len(comments)):
+    user_id = ids[i].text.strip()
+    user_comment = comments[i].text.strip()
+    
+    print(f"{i+1}. [{user_id}] : {user_comment[:50]}...") # 너무 기니까 50자만 출력
+    youtube_data.append([user_id, user_comment])
+
+df_youtube = pd.DataFrame(youtube_data, columns=['작성자', '댓글내용'])
+
+# df_youtube.to_excel('youtube_comments.xlsx', index=False)
+# print("유튜브 댓글 엑셀 저장 완료!")
+driver.quit()
+
+#🔴3️⃣3일차 추가된 부분!!!
+# 1. 필요한 라이브러리 설치 🟠pip install wordcloud
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from PIL import Image # 2️⃣이미지 파일을 열기
+import numpy as np
+
+# 2. 모든 댓글을 하나의 긴 문장으로 합치기
+all_comments = " ".join(df_youtube['댓글내용'])
+
+# 3. 워드클라우드 설정 (한글 폰트) 2️⃣아래한줄 마스크
+# word_mask = np.array(Image.open(r'C:\Users\miran\Desktop\folder\Python\wordCloud.PNG'))
+                       
+wc = WordCloud(
+    font_path='malgun', 
+    # mask=word_mask, #2️⃣
+    background_color='white', 
+    width=800, 
+    height=600
+).generate(all_comments) #만들어내다
+
+# 4. 화면에 출력
+plt.figure(figsize=(10, 8))
+plt.imshow(wc, interpolation='bilinear') #Image Show 단어의 경계면을 부드럽게
+plt.axis('off') # 축 숨기기
+plt.show()
