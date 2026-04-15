@@ -7,9 +7,70 @@ list_data = [1, 2, 3, 4, 5]
 # Numpy 배열로 변환
 arr = np.array(list_data)
 
-print(f"평균값: {np.mean(arr)}") # 평균 계산
-print(f"최댓값: {np.max(arr)}")  # 최댓값 계산
-print(f"전체 합: {np.sum(arr)}")  # 합계 계산
+print(f"평균값: {np.____(arr)}") # 평균 계산
+print(f"최댓값: {np.___(arr)}")  # 최댓값 계산
+print(f"전체 합: {np.___(arr)}")  # 합계 계산
 
 # 오류: numpy나 pandas 버전이 서로 맞지 않거나 설치가 깨진 경우
 # pip install --upgrade --force-reinstall numpy pandas
+
+
+2️⃣ ========================================================================
+
+import numpy as np
+sales = np.array([150, 200, -50, 300, 1500, 250]) # -50과 1500이 이상치인 상황
+
+# 0보다 크고 1000보다 작은 데이터만 🟢추출 (필터링)
+refined_sales = sales[(sales > 0) & (sales < 1000)]
+
+#정제되기 전 데이터 확인
+print(f"정제된 데이터: {refined_sales}")
+print(f"정제 후 평균: {np.mean(refined_sales):.1f}") #: 형식을 지정 소수점1자리
+
+
+3️⃣ ========================================================================
+
+#🟢서로 단위가 다른 데이터: 모든 데이터를 0에서 1 사이로 맞추는 작업(Min-Max Scaling)
+scores = np.array([55, 90, 75, 40, 100])
+
+# (현재값 - 최소값) / (최대값 - 최소값)
+scaled_scores = (scores - np.min(scores)) / (np.max(scores) - np.min(scores))
+
+print(f"변환된 점수: {scaled_scores}")
+
+
+4️⃣ ========================================================================
+# 😁🍋리스트와 np.array 차이
+
+
+5️⃣ ========================================================================
+
+# 😁🟠np.where를 사용하여 특정 기준(5.0%)에 따라 데이터 분류
+
+import pandas as pd
+import numpy as np
+
+# 1. 실무 데이터 생성 (지점별 현재 금리 현황)
+data = {
+    '지점': ['서울', '부산', '대구', '인천', '광주', '대전'],
+    '현재금리': [4.2, 5.8, 3.9, 5.1, 4.8, 6.2]
+}
+df = pd.__________(data)
+
+# 2. np.where로 조건문 적용 (엑셀의 IF 함수 역할)
+# 형식:🔴 np.where(조건, 참일 때 값, 거짓일 때 값)
+df['위험도'] = np._____(df['현재금리'] >= 5.0, '고금리(위험)', '정상')
+
+# 3. 결과 확인
+print("--- 금리 위험도 분석 결과 ---")
+print(df)
+
+# 4. 고금리 지점만 🟢따로 추출하기 (필터링)
+high_rate_branches = df[df['위험도'] == '고금리(위험)']
+print("\n--- 관리 대상 지점 리스트 ---")
+print(high_rate_branches)
+
+
+
+
+
