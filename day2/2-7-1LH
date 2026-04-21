@@ -4,7 +4,7 @@ import pandas as pd
 # 1. 이미지의 End Point와 인증키 설정
 # 주소 끝에 상세기능인 /rentalHouseList가 이미 포함되어 있습니다.
 base_url = "https://data.myhome.go.kr:443/rentalHouseList" 
-service_key = "_____"
+service_key = "6114f483bd6368bb21a7995881e36487d6baeae732d0dcdd3c719842dd0d35ed"
 
 # 2. 파라미터 설정 (ServiceKey 대소문자 주의)
 # 보통 공공데이터는 serviceKey(소문자 s)를 많이 쓰지만, 안 되면 ServiceKey로 시도하세요.
