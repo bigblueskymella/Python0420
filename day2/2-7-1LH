@@ -27,8 +27,8 @@ if response.status_code == 200:
         print(data) 
         
         # 데이터가 있다면 데이터프레임으로 변환
-        if 'hsmpList' in data and data['hsmpList']:
-            df = pd.DataFrame(data['hsmpList'])
+        if '________' in data and data['________']:
+            df = pd.DataFrame(data['________'])
             print("\n--- [데이터프레임 미리보기] ---")
             print(df.head())
         else:
