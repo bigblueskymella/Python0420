@@ -1,0 +1,26 @@
+🟢데이터 정제 요약
+1. 결측치(NaN) 처리하기
+비어있는지 확인: df.isnull().sum()
+삭제: df.dropna()
+평균값으로 채우기: df['컬럼'].fillna(df['컬럼'].mean(), inplace=True)
+직전/직후 값으로 채우기: df.fillna(method='ffill') (시계열 데이터)
+
+2. 중복 및 오타 수정
+똑같은 데이터나 잘못 들어간 글자 빼내기
+중복 제거: df.drop_duplicates()
+글자 치환 (예: 'Seoul' -> '서울'): df['city'].replace('Seoul', '서울')
+공백 제거: df['name'].str.strip()
+
+3. 데이터 타입 변경
+숫자인데 문자열로 되어 있어 계산이 안 될 때 
+숫자로 변환: df['price'] = pd.to_numeric(df['price'], errors='coerce') (에러는 NaN 처리)
+날짜로 변환: pd.to_datetime(df['date'])
+
+4. 필터링과 정렬
+조건 필터링: df[df['age'] >= 20]
+여러 조건: df[(df['age'] >= 20) & (df['gender'] == 'F')]
+내림차순 정렬: df.sort_values('count', ascending=False)
+
+5. 그룹화(Groupby)
+지역별 평균: df.groupby('region')['salary'].mean()
+개수 세기: df['region'].value_counts()
