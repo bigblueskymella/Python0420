@@ -151,3 +151,26 @@ plt.legend(title='성별')
 
 plt.tight_layout()
 plt.show()
+
+
+====================================================# 파일 생성 코드 (참고용- 예시 파일 만들기 용)
+import pandas as pd
+import numpy as np
+from datetime import date, timedelta
+
+np.random.seed(42)
+num_users = 200
+start_date = date(1960, 1, 1)
+end_date = date(2005, 12, 31)
+days_between = (end_date - start_date).days
+birthdays = [start_date + timedelta(days=np.random.randint(0, days_between)) for _ in range(num_users)]
+genders = np.random.choice(['남', '여'], num_users)
+applied = []
+for i in range(num_users):
+    age_approx = 2026 - birthdays[i].year
+    prob = 0.6 if age_approx < 35 else 0.3
+    if genders[i] == '여': prob += 0.15
+    applied.append(np.random.binomial(1, min(prob, 1.0)))
+
+df = pd.DataFrame({'user_id': range(1001, 1001 + num_users), 'birth': birthdays, 'gender': genders, 'applied': applied})
+df.to_csv('reception_data.csv', index=False, encoding='utf-8-sig')
