@@ -82,3 +82,72 @@ pd.cut(ages, bins, labels=group_names)
 # 🟢그래프를 그리기 직전에 꼭 df.info()나 df.isnull().sum()
 #  **결측치(빈 칸)**가 없는지 확인하는 습관
 
+
+================================================================================
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from datetime import date
+
+# 한글 폰트 설정 (필수!)
+plt.rcParams['font.family'] = 'Malgun Gothic' # Windows용
+plt.rcParams['axes.unicode_minus'] = False # 마이너스 깨짐 방지
+
+# 1. 데이터 로드 (2️⃣ 미리 확인 습관)
+df = pd.read_csv('reception_data.csv')
+# print("info 정보 출력") #2️⃣
+# df.info()
+print("isnull 비어있는지 확인 🔴p285")
+print(df.isnull().sum())
+# 날짜 데이터는 읽어올 때 문자열이므로 1️⃣datetime으로 변환 필수!
+df['birth'] = pd.to_datetime(df['birth']) 
+
+# 2. [전처리 핵심] 생년월일 -> 만나이 계산 함수
+today = date.today()
+def calculate_age(born):
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+# 튜플끼리 < 비교를 하면 True 1 False 0 //생일이 안 지났으면 1을 빼고, 지났으면 0빼는
+df['age'] = df['birth'].apply(calculate_age)
+
+# 3. [전처리 핵심] 나이 -> 연령대 그룹화 (pd.cut)
+bins = [0, 29, 39, 49, 100]
+group_names = ['20대 이하', '30대', '40대', '50대 이상']
+df['age_group'] = pd.cut(df['age'], bins, labels=group_names)
+print(df.head()) #🟢3️⃣ 열 추가 확인! (기존 열에 덮어쓰면 곤란)
+
+# 4. [분석 핵심] 연령대별/성별 신청 비율 계산 (pd.crosstab)
+# normalize='index'를 하면 각 행(연령대)별로 비율을 계산해 줍니다.
+pivot_df = pd.crosstab(index=[df['age_group'], df['gender']], 
+                       columns=df['applied'], 
+                       normalize='index') * 100
+print("피봇🟠")
+print(pivot_df) #요약된 통계표에서
+# 우리가 필요한 건 '신청[1]'열의 비율이므로 그것만 추출
+apply_rate_df = pivot_df[1].reset_index() #다림질
+apply_rate_df.columns = ['연령대', '성별', '신청비율'] # 컬럼명 정리
+
+print("--- 연령대별/성별 신청 🟢비율 (%) ---")
+print(apply_rate_df)
+
+# 5. [시각화] 다차원 막대그래프 (Seaborn 활용)
+plt.figure(figsize=(10, 6))
+# x축: 연령대, y축: 신청비율, 색상(hue): 성별
+sns.barplot(data=apply_rate_df, x='연령대', y='신청비율', hue='성별', palette='pastel')
+
+plt.title('연령대 및 성별에 따른 서비스 신청 비율', fontsize=16, pad=20)
+plt.ylabel('신청 비율 (%)', fontsize=12)
+plt.xlabel('연령대', fontsize=12)
+plt.ylim(0, 100) # 비율이므로 y축은 0~100 고정
+plt.legend(title='성별')
+
+# 비율 숫자 표시 (디테일 팁)
+# for p in plt.gca().patches:
+#     width = p.get_width()
+#     height = p.get_height()
+#     x, y = p.get_xy() 
+#     if height > 0: # 0보다 클 때만 표시
+#         plt.annotate(f'{height:.1f}%', (x + width/2, y + height*1.02), ha='center', fontsize=10)
+
+plt.tight_layout()
+plt.show()
