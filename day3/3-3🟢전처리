@@ -1,0 +1,14 @@
+#🟢전처리: fillna와 groupby 시본이 추가됨
+
+import pandas as pd # 데이터 표(DataFrame)를 다루는 라이브러리
+import matplotlib.pyplot as plt # 기본 그래프를 그리는 도구
+import seaborn as sns # 데이터 시각화 라이브러리 🟠pip install seaborn 
+
+# 1. 가상 데이터 생성 (전처리 실습)
+data = {
+    '부서': ['고객지원', '시설관리', '고객지원', '에너지사업', '시설관리', '고객지원'],
+    '만족도': [85, 92, None, 78, 95, 88], # 결측치(None) 포함
+    '접수건수': [120, 80, 150, 40, 90, 110]
+}
+df = pd.DataFrame(data)
+
