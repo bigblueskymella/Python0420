@@ -1,0 +1,12 @@
+# 🟢빈칸(NaN), to_datetime 서로 다른 형식의 날짜
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 1. 가상의 주택금융 데이터
+data = {
+    '날짜': ['2023-01-02', '2023/01/03', '2023.01.05', '2023-01-04', '2023-01-08'],
+    '금리': [4.5, 4.55, np.nan, 4.52, 4.6],
+    '대출실행액': [1200, 1500, 1100, 1300, 1400]
+}
+df = pd.DataFrame(data)
