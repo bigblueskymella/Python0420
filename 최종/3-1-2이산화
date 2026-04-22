@@ -1,0 +1,36 @@
+#🟢이산화 p298
+import pandas as pd
+ages = [15, 22, 25, 27, 21, 23, 37, 31, 61, 45, 41, 32] # 15세 해보기 NaN
+bins = [18, 25, 35, 60, 100] 
+age_categories = pd.cut(ages, bins)
+age_categories
+# print(len(age_categories))
+# age_categories.codes
+# age_categories.categories
+# age_categories.categories[0]
+
+group_names = ["젊은", "청년", "중년", "노인"] #"어린이" 추가
+pd.cut(ages, bins, labels=group_names)
+df = pd.DataFrame(pd.cut(ages, bins, labels=group_names)) #🔴여기부터
+# df = pd.DataFrame(age_categories, columns=['연령대']) #1️⃣
+
+# 계산 결과(Categorical 데이터)를 변수에 담기3️⃣
+age_categories = pd.cut(ages, bins, labels=group_names) #3️⃣
+
+# 두 리스트를 합쳐서 데이터프레임 생성 2️⃣
+df = pd.DataFrame({
+    '나이': ages,
+    '연령대': age_categories
+})
+
+df['연령대'].dtype ##타입 확인:범주형(Categorical)이면서, 내부 데이터는 Interval(구간) 타입
+df['연령대'] = df['연령대'].astype(str) #타입 변환
+# df['연령대'] = df.fillna("기타") #🔴1️⃣ 한개의 열column일 때
+df['연령대'] = df['연령대'].fillna("기타") #2️⃣두 개 column 이상일때
+print(df)
+
+# 3️⃣만약 데이터프레임 전체의 빈칸을 한 번에 채우고 싶다면 (df 자체를 갱신)
+# df = df.fillna("기타")
+
+# 🟢그래프를 그리기 직전에 꼭 df.info()나 df.isnull().sum()
+#  **결측치(빈 칸)**가 없는지 확인하는 습관(아래 셀)
