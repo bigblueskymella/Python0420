@@ -1,0 +1,24 @@
+# 머신러닝 맛보기
+# 머신러닝(Machine Learning)은 사람이 일일이 규칙을 프로그래밍하는 대신, 
+# 컴퓨터가 데이터를 통해 스스로 학습하여 규칙(모델)을 찾아내는 기술
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# 데이터: [공부시간, 시험점수]
+data = {'공부시간': [2, 4, 6, 8, 10], '점수': [40, 55, 20, 85, 95]}
+df = pd.DataFrame(data)
+
+plt.rcParams['font.family'] = 'Malgun Gothic'
+plt.figure(figsize=(8, 5))
+
+# 👼regplot: 산점도 + 회귀선(머신러닝이 찾은 규칙)을 한 번에!
+# 수학 공식 없이도 머신러닝의 핵심인 **'예측선'**
+# 파란색 선이 바로 머신러닝의 결과물
+# 파이썬이 데이터 5개를 보고 **'아, 이 정도 기울기로 성적이 오르겠구나'**라고 규칙을 찾아낸 것
+
+sns.regplot(data=df, x='공부시간', y='점수', color='blue')
+
+plt.title('머신러닝 맛보기: 공부시간에 따른 점수 예측 모델')
+plt.grid(True, alpha=0.3)
+plt.show()
